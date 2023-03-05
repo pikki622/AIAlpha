@@ -40,40 +40,35 @@ class BaseBars:
         list_bars = []
         #list_bars = pd.DataFrame(columns=cols)
         for row in data.values:
-            if high_price < row[2]:
-                high_price = row[2]
-            if low_price > row[2]:
-                low_price = row[2]
+            high_price = max(high_price, row[2])
+            low_price = min(low_price, row[2])
             tick += 1
             cum_volume += row[3]
             cum_dollar += row[2]*row[3]
             cache.append(row[2])
 
-            if self.method == "tick":
-                if tick == self.threshold:
-                    date = row[0]
-                    time = row[1]
-                    timestamp, bar = self._create_bar(cache, date, time, high_price, low_price, cum_volume, cum_dollar)
-                    list_bars.append(bar)
-                    datetime.append(timestamp)
-                    high_price, low_price, cum_volume, cum_dollar, tick = -np.inf, np.inf, 0, 0, 0
-            if self.method == "volume":
-                if cum_volume >= self.threshold:
-                    date = row[0]
-                    time = row[1]
-                    timestamp, bar = self._create_bar(cache, date, time, high_price, low_price, cum_volume, cum_dollar)
-                    list_bars.append(bar)
-                    datetime.append(timestamp)
-                    high_price, low_price, cum_volume, cum_dollar, tick = -np.inf, np.inf, 0, 0, 0
-            if self.method == "dollar":
-                if cum_dollar >= self.threshold:
-                    date = row[0]
-                    time = row[1]
-                    timestamp, bar = self._create_bar(cache, date, time, high_price, low_price, cum_volume, cum_dollar)
-                    list_bars.append(bar)
-                    datetime.append(timestamp)
-                    high_price, low_price, cum_volume, cum_dollar, tick = -np.inf, np.inf, 0, 0, 0
-            #print(row[1])
+            if self.method == "tick" and tick == self.threshold:
+                date = row[0]
+                time = row[1]
+                timestamp, bar = self._create_bar(cache, date, time, high_price, low_price, cum_volume, cum_dollar)
+                list_bars.append(bar)
+                datetime.append(timestamp)
+                high_price, low_price, cum_volume, cum_dollar, tick = -np.inf, np.inf, 0, 0, 0
+            if self.method == "volume" and cum_volume >= self.threshold:
+                date = row[0]
+                time = row[1]
+                timestamp, bar = self._create_bar(cache, date, time, high_price, low_price, cum_volume, cum_dollar)
+                list_bars.append(bar)
+                datetime.append(timestamp)
+                high_price, low_price, cum_volume, cum_dollar, tick = -np.inf, np.inf, 0, 0, 0
+            if self.method == "dollar" and cum_dollar >= self.threshold:
+                date = row[0]
+                time = row[1]
+                timestamp, bar = self._create_bar(cache, date, time, high_price, low_price, cum_volume, cum_dollar)
+                list_bars.append(bar)
+                datetime.append(timestamp)
+                high_price, low_price, cum_volume, cum_dollar, tick = -np.inf, np.inf, 0, 0, 0
+                #print(row[1])
         return datetime, list_bars
 
 

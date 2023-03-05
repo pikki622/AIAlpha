@@ -37,7 +37,7 @@ class DataProcessing:
             df[f'liq_ewm{j}'] = df['liq'].ewm(span=j).mean()
             #df[f'liq_autocorr{j}'] = df['liq'].corr(df['liq'].shift(j))
         if window > 10:
-            for j in range(10, window, 5):
+            for _ in range(10, window, 5):
                 #df[f'liq_vol{j}'] = df['liq'].rolling(j).std()
                 #df[f'liq_ewmvol{j}'] = df['liq'].ewm(span=j).std()
                 break
@@ -66,17 +66,14 @@ class DataProcessing:
         """
         if has_y:
             y_values = df_y.copy()
-            y_values.columns = ['y_values']
+            fulldata = df_x.copy()
+        elif window == 0:
+            y_values = df_x['close'].copy()
             fulldata = df_x.copy()
         else:
-            if window == 0:
-                y_values = df_x['close'].copy()
-                y_values.columns = ['y_values']
-                fulldata = df_x.copy()
-            else:
-                y_values = np.log(df_x['close'].copy()/df_x['close'].copy().shift(-window)).dropna()
-                y_values.columns = ['y_values']
-                fulldata = df_x.iloc[:-window, :].copy()           
+            y_values = np.log(df_x['close'].copy()/df_x['close'].copy().shift(-window)).dropna()
+            fulldata = df_x.iloc[:-window, :].copy()
+        y_values.columns = ['y_values']
         if binary_y:
             y_values.loc[y_values['y_values']<0] = -1
             y_values.loc[y_values['y_values']>0] = 1

@@ -50,17 +50,17 @@ stories = fetch_new_stories(params)
 sentimentv = float()
 
 for story in stories:
-	print('Title: ' + story.title)
-	print('Source: ' + story.source.name)
-	print('Date: ' + str(story.published_at.date()))
-	print('Title sentiment: ' + str(story.sentiment.title.score))
-	print('Body sentiment: ' + str(story.sentiment.body.score))
-	print('Link: ' + str(story.links.permalink) + '\n')
+	print(f'Title: {story.title}')
+	print(f'Source: {story.source.name}')
+	print(f'Date: {str(story.published_at.date())}')
+	print(f'Title sentiment: {str(story.sentiment.title.score)}')
+	print(f'Body sentiment: {str(story.sentiment.body.score)}')
+	print(f'Link: {str(story.links.permalink)}' + '\n')
 	sentimentv += story.sentiment.body.score
 
 if (len(stories) > 0):
 	sentimentv = sentimentv / len(stories)
-	print('Average body sentiment: ' + str(sentimentv) + '\n')
-	
+	print(f'Average body sentiment: {str(sentimentv)}' + '\n')
+
 print('************')
 print("Fetched %d stories published between %s and %s" %(len(stories), params['published_at_start'], params['published_at_end']))

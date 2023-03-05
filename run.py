@@ -3,7 +3,7 @@ from models.nnmodel import NNModel
 from models.rfmodel import RFModel
 from data_processor.data_processing import DataProcessing
 import pandas as pd
-import numpy as np 
+import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 import matplotlib.pyplot as plt
 from data_processor.base_bars import BaseBars
@@ -23,8 +23,12 @@ base.batch_run()
 
 print('Processing data...')
 preprocess = DataProcessing(0.8)
-df = preprocess.make_features(file_path=f"sample_data/processed_data/price_bars/dollar_bars.csv", window=20,  
-    csv_path="sample_data/processed_data/autoencoder_data", save_csv=True)
+df = preprocess.make_features(
+    file_path="sample_data/processed_data/price_bars/dollar_bars.csv",
+    window=20,
+    csv_path="sample_data/processed_data/autoencoder_data",
+    save_csv=True,
+)
 fulldata, y_values, train_x, train_y, test_x, test_y =  preprocess.make_train_test(df_x=df, df_y=None, window=1, 
 csv_path="sample_data/processed_data/autoencoder_data", save_csv=True)
 
@@ -57,7 +61,7 @@ autoencoder.encode_data(a_scaled_full, csv_path='sample_data/processed_data/nn_d
 
 print('Processing data...')
 preprocess = DataProcessing(0.8)
-df1 = pd.read_csv("sample_data/processed_data/nn_data/full_x.csv", index_col=0) 
+df1 = pd.read_csv("sample_data/processed_data/nn_data/full_x.csv", index_col=0)
 df2 = pd.read_csv('sample_data/processed_data/autoencoder_data/full_y.csv', index_col=0)
 fulldata, y_values, train_x, train_y, test_x, test_y =  preprocess.make_train_test(df_x=df1, df_y=df2, window=1, 
 csv_path="rf_data", has_y=True, binary_y=True, save_csv=True)
