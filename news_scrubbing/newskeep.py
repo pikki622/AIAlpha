@@ -6,17 +6,18 @@ from collections import deque
 datax = deque()
 
 for story in apiprocessing.stories:
-    x = list()
-    x.append(story.title)
-    x.append(story.source.name)
-    x.append(story.published_at.date())
-    x.append(story.sentiment.title.score)
-    x.append(story.sentiment.body.score)
-    x.append(' '.join(story.summary.sentences))
+    x = [
+        story.title,
+        story.source.name,
+        story.published_at.date(),
+        story.sentiment.title.score,
+        story.sentiment.body.score,
+        ' '.join(story.summary.sentences),
+    ]
     print(story.summary.sentences)
     x.append(story.links.permalink)
     datax.append(x)
- 
+
 storage = np.array(datax)
 datax = np.array(datax)
 

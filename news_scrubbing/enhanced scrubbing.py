@@ -23,28 +23,31 @@ def attention_check(text):
     tokenlist = nltk.pos_tag(nltk.word_tokenize(text))
     start = len(templist)
     for item in templist:
-        if (len(item) < 4) and (len(item) > 1) and (item not in PUNC_LIST):
-            if randint(1,4) != 1:
-                i = 0
-                while i<len(templist):
-                    if templist[i] == item:
-                        del templist[i]
-                        del tokenlist[i]
-                    else:
-                        i+=1
+        if (
+            (len(item) < 4)
+            and (len(item) > 1)
+            and (item not in PUNC_LIST)
+            and randint(1, 4) != 1
+        ):
+            i = 0
+            while i<len(templist):
+                if templist[i] == item:
+                    del templist[i]
+                    del tokenlist[i]
+                else:
+                    i+=1
     for item in templist:
         j = 0
         while j <len(templist) and (len(templist) > (start/5)) and (len(templist)>56):
             if tokenlist[j][1] in indentifiers:
-                if randint(0,20) in [i for i in range(7)]:
+                if randint(0, 20) in list(range(7)):
                     del templist[j]
                     del tokenlist[j]
-            else:
-                if randint(0,20) in [i for i in range(3)]:
-                    del templist[j]
-                    del tokenlist[j]
+            elif randint(0, 20) in list(range(3)):
+                del templist[j]
+                del tokenlist[j]
             j+=1
-            
+
     text = ' '.join(templist)
     return text
 
